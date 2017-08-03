@@ -2,7 +2,7 @@ const assert = require('chai').assert;
 const ensureAuth = require('../../lib/auth/ensure-auth')();
 const tokenService = require('../../lib/auth/token-service');
 
-describe.only('ensure auth middleware', () => {
+describe('ensure auth middleware', () => {
 
     it('routes to error handler when no token found in Authorization header', done => {
         const req = {

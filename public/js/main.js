@@ -50,7 +50,7 @@ const error = document.getElementById('error');
 const setError = (msg = '') => error.textContent = msg;
 const resetError = () => setError();
 
-function addStore(form) {
+function addStore(form) { //eslint-disable-line
     resetError();
     const { name, city } = form.elements;
     const store = {

@@ -7,7 +7,7 @@ describe('auth', () => {
     before(db.drop);
 
     const user = {
-        username: 'user',
+        email: 'user',
         password: 'abc'
     };
 
@@ -25,47 +25,47 @@ describe('auth', () => {
                     }
                 );
         
-        it('signup requires username', () => 
-            badRequest('/auth/signup', { password: 'abc' }, 400, 'username and password must be supplied')
+        it('signup requires email', () => 
+            badRequest('/api/auth/signup', { password: 'abc' }, 400, 'email and password must be supplied')
         );		
         
         it('signup requires password', () =>
-            badRequest('/auth/signup', { username: 'abc' }, 400, 'username and password must be supplied')
+            badRequest('/api/auth/signup', { email: 'abc' }, 400, 'email and password must be supplied')
         );
 
         let token = '';
 
         it('signup', () => 
             request
-                .post('/auth/signup')
+                .post('/api/auth/signup')
                 .send(user)
                 .then(res => assert.ok(token = res.body.token))
         );
 
-        it('can\'t use same username', () => 
-            badRequest('/auth/signup', user, 400, 'username user already exists')
+        it('can\'t use same email', () => 
+            badRequest('/api/auth/signup', user, 400, 'email user already exists')
         );
 
                 
-        it('signin requires username', () => 
-            badRequest('/auth/signin', { password: 'abc' }, 400, 'username and password must be supplied')
+        it('signin requires email', () => 
+            badRequest('/api/auth/signin', { password: 'abc' }, 400, 'email and password must be supplied')
         );		
         
         it('signin requires password', () =>
-            badRequest('/auth/signin', { username: 'abc' }, 400, 'username and password must be supplied')
+            badRequest('/api/auth/signin', { email: 'abc' }, 400, 'email and password must be supplied')
         );
 
         it('signin with wrong user', () =>
-            badRequest('/auth/signin', { username: 'bad user', password: user.password }, 401, 'invalid username or password')
+            badRequest('/api/auth/signin', { email: 'bad user', password: user.password }, 401, 'invalid email or password')
         );
 
         it('signin with wrong password', () =>
-            badRequest('/auth/signin', { username: user.username, password: 'bad' }, 401, 'invalid username or password')
+            badRequest('/api/auth/signin', { email: user.email, password: 'bad' }, 401, 'invalid email or password')
         );
 
         it('signin', () => 
             request
-                .post('/auth/signin')
+                .post('/api/auth/signin')
                 .send(user)
                 .then(res => assert.ok(res.body.token))
         );
@@ -73,7 +73,7 @@ describe('auth', () => {
 
         it('token is invalid', () =>
             request
-                .get('/auth/verify')
+                .get('/api/auth/verify')
                 .set('Authorization', 'bad token')
                 .then(
                     () => { throw new Error('success response not expected'); },
@@ -83,7 +83,7 @@ describe('auth', () => {
 
         it('token is valid', () =>
             request
-                .get('/auth/verify')
+                .get('/api/auth/verify')
                 .set('Authorization', token)
                 .then(res => assert.ok(res.body))
         );
@@ -95,25 +95,25 @@ describe('auth', () => {
 
         it('401 with no token', () => {
             return request
-                .get('/actors')
+                .get('/api/stores')
                 .then(
                     () => { throw new Error('status should not be 200'); },
                     res => {
                         assert.equal(res.status, 401);
-                        assert.equal(res.response.body.error, 'Unauthorized');
+                        assert.equal(res.response.body.error, 'No Authorization Found');
                     }
                 );
         });
 
         it('403 with invalid token', () => {
             return request
-                .get('/actors')
+                .get('/api/stores')
                 .set('Authorization', 'badtoken')
                 .then(
                     () => { throw new Error('status should not be 200'); },
                     res => {
                         assert.equal(res.status, 401);
-                        assert.equal(res.response.body.error, 'Unauthorized');
+                        assert.equal(res.response.body.error, 'Authorization Failed');
                     }
                 );
         });

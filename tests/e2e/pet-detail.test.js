@@ -2,18 +2,12 @@ const db = require('./db');
 const request = require('./request');
 const assert = require('chai').assert;
 
-describe.only('pets api', () => {
+describe('pet detail api', () => {
     before(db.drop);
 
     let token = '';    
-    before(() => {
-        return request.post('/api/auth/signup')
-            .send({ email: 'me@me.com', password: 'abc' })
-            .then(res => {
-                token = res.body.token;
-            });
-    });
-
+    before(() => db.getToken().then(t => token = t));
+    
     function seedData(url, data) {
         return request.post(url).send(data).set('Authorization', token);
     }
@@ -58,6 +52,7 @@ describe.only('pets api', () => {
             .then(({ body: pet }) => {
                 
                 assert.deepEqual(pet, {
+                    __v: 0,
                     _id: pet._id,
                     name: pet.name,
                     legs: pet.legs,

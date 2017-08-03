@@ -1,19 +1,17 @@
 {
-  "name": "pets-r-kewl",
+  "name": "apr24_express-basics",
   "version": "1.0.0",
-  "engines": {
-    "node": "7.x"
-  },
   "description": "",
   "main": "index.js",
   "scripts": {
     "lint": "eslint .",
     "pretest": "npm run lint",
-    "test": "mocha --recursive",
-    "test:watch": "npm run test -- -w",
-    "test:unit": "mocha test/unit",
-    "test:e2e": "mocha test/e2e",
-    "start": "env $(cat .env) nodemon server.js"
+    "test": "npm run test:run",
+    "test:run": "mocha tests --recursive",
+    "test:watch": "npm run test:run -- -w",
+    "test:unit": "mocha tests/unit --recursive",
+    "test:e2e": "mocha tests/e2e --recursive",
+    "start": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
@@ -24,8 +22,7 @@
     "express": "^4.15.2",
     "jsonwebtoken-promisified": "^1.0.3",
     "mongoose": "^4.9.6",
-    "morgan": "^1.8.1",
-    "nodemon": "^1.11.0"
+    "morgan": "^1.8.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",
