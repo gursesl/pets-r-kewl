@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "8.x"
+  },
   "scripts": {
     "lint": "eslint .",
     "pretest": "npm run lint",
@@ -22,7 +25,8 @@
     "express": "^4.15.2",
     "jsonwebtoken-promisified": "^1.0.3",
     "mongoose": "^4.9.6",
-    "morgan": "^1.8.1"
+    "morgan": "^1.8.1",
+    "nodemon": "^1.11.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
