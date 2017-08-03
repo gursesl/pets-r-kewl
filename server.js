@@ -1,9 +1,12 @@
 /* eslint no-console: "off" */
+console.log(process.env);
+require('dotenv').config();
+console.log(process.env);
 const app = require('./lib/app');
 const http = require('http');
 
 const connect = require('./lib/connect');
-const dbUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/pets';
+const dbUri = process.env.MONGODB_URI;
 connect(dbUri);
 
 const server = http.createServer(app);
